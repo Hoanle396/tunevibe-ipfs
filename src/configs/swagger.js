@@ -1,29 +1,29 @@
-const swaggerJsdoc = require("swagger-jsdoc")
+const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { logger } = require("../utils/logger");
 const options = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Swagger Product api documentation"
-        },
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Swagger Product api documentation",
     },
-    apis: ["./src/controllers/*.js"]
+  },
+  apis: ["./src/controllers/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 function swaggerDocs(app, port) {
-    // Swagger page
-    app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  // Swagger page
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-    // Docs in JSON format
-    app.get("/docs.json", (req, res) => {
-        res.setHeader("Content-Type", "application/json");
-        res.send(swaggerSpec);
-    });
+  // Docs in JSON format
+  app.get("/docs.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
+  });
 
-    logger.start(`🚀 Docs available at http://localhost:${port}/docs`);
+  logger.start(`🚀 Docs available at http://localhost:${port}/docs`);
 }
 
-module.exports = swaggerDocs
+module.exports = swaggerDocs;

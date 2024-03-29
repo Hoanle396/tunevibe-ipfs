@@ -1,3 +1,3 @@
-const logger = require('signale');
+const logger = require("signale");
 
-module.exports = { logger }
+module.exports = { logger };

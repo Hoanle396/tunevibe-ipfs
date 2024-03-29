@@ -3,19 +3,23 @@ const { Hash } = require("../models/hash");
 const { logger } = require("../utils/logger");
 const { upload } = require("../utils/upload");
 var router = express.Router();
-const ipfsHash = require('ipfs-only-hash');
+const ipfsHash = require("ipfs-only-hash");
 const { authentication } = require("../middlewares/authentication");
 
-router.post("/pinIpfs", [authentication,upload.single("file")], async function (req, res, next) {
-  try {
-    const hash = await ipfsHash.of(req.file.path);
-    const data = await Hash.create({ content:req.file.path, hash });
-    return res.status(200).json(data);
-  } catch (error) {
-    logger.error(error?.message);
-    return res.status(400).json(error);
+router.post(
+  "/pinIpfs",
+  [authentication, upload.single("file")],
+  async function (req, res, next) {
+    try {
+      const hash = await ipfsHash.of(req.file.path);
+      const data = await Hash.create({ content: req.file.path, hash });
+      return res.status(200).json(data);
+    } catch (error) {
+      logger.error(error?.message);
+      return res.status(400).json(error);
+    }
   }
-});
+);
 
 /**
  * @openapi
@@ -36,9 +40,9 @@ router.post("/pinIpfs", [authentication,upload.single("file")], async function (
 router.get("/:hash", async function (req, res, next) {
   const { hash } = req.params;
   try {
-    const data = await Hash.findOne({hash}).select({ _id: 0, __v: 0 });
+    const data = await Hash.findOne({ hash }).select({ _id: 0, __v: 0 });
     if (!data) {
-      return res.status(404).send({message: 'not found'});
+      return res.status(404).send({ message: "not found" });
     }
     return res.status(200).sendfile(data.content);
   } catch (error) {
@@ -46,4 +50,4 @@ router.get("/:hash", async function (req, res, next) {
   }
 });
 
-module.exports = {router}
+module.exports = { router };
