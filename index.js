@@ -15,5 +15,6 @@ const port = process.env.PORT || 3001;
 swaggerDocs(app, port);
 app.use(router);
 app.listen(port, () => {
+  console.log("hello")
   logger.star(`🚀 App listening on port ${port}`);
 });
